@@ -5,6 +5,6 @@ ______________________________
 ## Для пользователей windows
 * перейдите в папку с проектом через cmd
 * пропишите **python -m venv venv**
-* пропишите **venv\Scripts\activate.bat
-* введите pip install -r requirements.txt
+* пропишите **venv\Scripts\activate.bat**
+* введите **pip install -r requirements.txt**
 

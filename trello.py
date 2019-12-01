@@ -10,6 +10,13 @@ class EmptyInput(Exception):
     pass
 
 
+class NotFoundName(Exception):
+    """
+    Ощибка ненайденой задачи в колонки
+    """
+    pass
+
+
 # данные авторизации  в trello api
 auth_params = {
     'key': None,
@@ -17,7 +24,7 @@ auth_params = {
 }
 # адрес ,на котором расположен trello api,туда отправляем HTTP запросы
 base_url = "https://api.trello.com/1/{}"
-board_id = "5dda7717421c4f2843c5fe72"
+board_id = None
 
 
 def read():
@@ -130,6 +137,8 @@ def move(task_name, column_name):
             print(f"{index} | {task['id']} | {task_column_name}")
         task_id = input("Выберите задачу и впешите её ID: ")
     else:
+        if dublicate_tasks[0]['id'] is None:
+            raise NotFoundName
         task_id = dublicate_tasks[0]['id']
     # Теперь у нас есть id задачи, которую мы хотим переместить
 
@@ -145,10 +154,15 @@ def move(task_name, column_name):
 
 if __name__ == "__main__":
     try:
-        auth_params['key'] = input("Enter your Trello-key: ")
-        auth_params['token'] = input("Enter your Trello-token: ")
-        if not (auth_params['key'] and auth_params['token']):
+        auth_params['key'] = input("Введите ваш trello-key: ")
+        auth_params['token'] = input("Введите ваш trello-token: ")
+        board_short_id = input(
+            "Введите короткий id доски(посмотреть можно в url в браузере): ")
+        if not (auth_params['key'] and auth_params['token'] and board_short_id):
             raise EmptyInput
+        board_id = requests.get(base_url.format("boards") +
+                                '/'+board_short_id, params=auth_params).json()['id']
+
         if len(sys.argv) <= 2:
             read()
         elif sys.argv[1] == 'create_column':
@@ -161,3 +175,5 @@ if __name__ == "__main__":
         print('Введите хотя бы что-нибудь, пожалуйста...')
     except JSONDecodeError:
         print("Ошибка доступа к сервису")
+    except NotFoundName:
+        print("Введенное название задачи отсутствует в списках, попробуйте ввести снова")

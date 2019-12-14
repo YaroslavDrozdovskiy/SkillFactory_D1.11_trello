@@ -94,7 +94,7 @@ def create(name, column_name):
         column_id = create_column(column_name)['id']
 
     requests.post(base_url.format('cards'), data={
-        'name': name, 'idList': column['id'], **auth_params})
+        'name': name, 'idList': column_id, **auth_params})
 
 
 def find_dublicated_tasks(task_name):

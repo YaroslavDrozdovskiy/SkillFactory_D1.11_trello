@@ -16,4 +16,4 @@ ______________________________
 * пропишите **python -m venv venv**
 * пропишите **venv\Scripts\activate.bat**
 * введите **pip install -r requirements.txt**
-* приложение попросит ввести key и token, которые можно получить на https://trello.com/app-key
+* приложение попросит ввести key и token (сгенерированный вручную), которые можно получить на https://trello.com/app-key
